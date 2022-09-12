@@ -1,23 +1,16 @@
 <template>
 	<div class="app">
-		<!-- если ДК в названии имеет PostForm, то тут он прописывается post-form (через дефис и с маленькой буквы), полное написание: <post-form></post-form>  -->
-		<!-- передаем те компоненты, которые я хочу использовать в шаблоне; @create  - подписываюсь на событие от ДК -->
 		<post-form @create="createPost" />
-
-		<!--v-bind:posts="posts" - это привязываю посты к компоненту, посты будут лететь в компонент как пропс -->
-		<post-list v-bind:posts="posts" />
-
+		<post-list v-bind:posts="posts" @remove="removePost" />
 	</div>
-
 </template>
 
 <script>
-// компоненты нужно импортировать
+
 import PostForm from "./components/PostForm.vue"
 import PostList from "./components/PostList.vue"
 
 export default {
-	// компоненты нужно зарегистрировать
 	components: {
 		PostList, PostForm
 	},
@@ -29,13 +22,16 @@ export default {
 	},
 
 	methods: {
-		// получили post от PostForm и в массив постов добавили в PostList
 		createPost(post) {
 			this.posts.push(post);
+		},
+
+		removePost(post) {
+			this.posts = this.posts.filter(p => p.id !== post.id) // тк метод filter возвращает новый массив, я перезаписываю старый массив
 		}
 	}
-}
-</script>
+}  </script>
+
 
 <style scoped>
 * {
